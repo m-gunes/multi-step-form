@@ -9,12 +9,37 @@
       <a-col :span="15">
          <a-row type="flex" justify="center">
             <a-col :span="10">
-               <form action="" class="multi-step-form">
+
+               <form action="" class="multi-step-form" v-if="activeStep === 0">
                   <section>
-                     <h3>step 1</h3>
+                     <div class="multi-step-form__heading">
+                        <h3>Data Product Name</h3>
+                        <span>With the Internet spreading like wildfire and reaching every part.</span>
+                     </div>
                      <Input />
+                     <a-button type="primary" @click="previous()">Back</a-button>
+                     <a-button type="primary" @click="next()">Next</a-button>
                   </section>
                </form>
+
+               <form action="" class="multi-step-form" v-if="activeStep === 1">
+                  <section>
+                     <h3>step 2</h3>
+                     <Input />
+                     <a-button type="primary" @click="previous()">Back</a-button>
+                     <a-button type="primary" @click="next()">Next</a-button>
+
+                  </section>
+               </form>
+
+               <form action="" class="multi-step-form" v-if="activeStep === 2">
+                  <section>
+                     <h3>step 3</h3>
+                     <Input />
+                     <a-button type="primary" @click="previous()">Back</a-button>
+                  </section>
+               </form>
+
             </a-col>
          </a-row>
       </a-col>
@@ -24,20 +49,33 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import { Input, Col, Row } from 'ant-design-vue';
+import { Input, Col, Row, Button } from 'ant-design-vue';
 
 export default {
   name: 'app',
+  data(){
+     return{
+        activeStep: 0
+     }
+  },
   components: {
     Input,
     "a-row": Row,
     "a-col": Col,
-    
+    "a-button": Button
+  },
+  methods: {
+     next(){
+        this.activeStep++;
+     },
+     previous(){
+        this.activeStep--;
+     }
   }
 }
 </script>
 
-<style>
+<style lang='scss'>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -54,5 +92,8 @@ export default {
 }
 
 .multi-step-form {
+   &__heading{
+      text-align: left;
+   }
 }
 </style>

@@ -2,13 +2,13 @@
   <div id="app">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <a-row type="flex" justify="space-around" align="middle" >
-      <a-col :span="9" class="img-field" >
+      <a-col :md="9" :lg="9" class="img-field" >
         <img alt="Vue logo" src="./assets/logo.png" />
         <h1>Multi Step Form</h1>
       </a-col>
-      <a-col :span="15">
+      <a-col :xs="24" :md="15" :lg="15">
         <a-row type="flex" justify="center">
-          <a-col :span="10" :class="{invisible: this.statusOk }">
+          <a-col :xs="22" :md="18" :lg="15" :xl="10" :class="{invisible: this.statusOk }">
             <a-steps progressDot size="small" :current="activeStep">
               <a-step v-for="item in steps" :key="item" />
 
@@ -210,6 +210,10 @@ export default {
   background-color: #f9f9f9;
   height: 100vh;
   text-align: center;
+  @media (max-width: 768px) {
+     display: none;
+     
+  }
 }
 
 .progress-bar {

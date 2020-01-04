@@ -8,7 +8,7 @@
       </a-col>
       <a-col :span="15">
         <a-row type="flex" justify="center">
-          <a-col :span="10">
+          <a-col :span="10" :class="{invisible: this.statusOk }">
             <a-steps progressDot size="small" :current="activeStep">
               <a-step v-for="item in steps" :key="item" />
 
@@ -19,7 +19,7 @@
             </a-steps>
             <div class="indicator">{{activeStep}}/3</div>
 
-            <a-form action class="multi-step-form">
+            <a-form class="multi-step-form">
               <section v-if="activeStep === 0">
                 <div class="multi-step-form__heading">
                   <h3>Data Product Name</h3>
@@ -27,7 +27,10 @@
                 </div>
 
                 <a-form-item label="Data">
-                  <a-input placeholder="Customer Services Data" />
+                  <a-input 
+                     v-model="dataProductName"
+                     placeholder="Customer Services Data"
+                  />
                   <small class="small-exp">At least 14, max. 72 character.</small>
                 </a-form-item>
 
@@ -77,9 +80,15 @@
                 </div>
 
                 <a-button type="primary" class="previous-btn" @click="previous()">Back</a-button>
+                <a-button type="primary" class="submit-btn" @click="handleSubmit()">Submit</a-button>
               </section>
             </a-form>
           </a-col>
+
+          <a-col :class="[this.statusOk ? 'visible' : 'invisible']">
+             <h1>Thanks for your reply...</h1>
+          </a-col>
+
         </a-row>
       </a-col>
     </a-row>
@@ -106,8 +115,10 @@ export default {
     return {
       //current: 0,
       activeStep: 0,
-      totalTabs: 0,
       steps: [0, 1, 2],
+      dataProductName: "",
+      statusOk: false,
+
       industryItem: [
         { name: "Advertising", isActive: false },
         { name: "Automotive", isActive: false },
@@ -128,10 +139,10 @@ export default {
         { name: "Construction", isActive: false }
       ],
       dataCollect: [
-         {name: "With the Internet spreading like wildfire and reaching every part.", isActive: false},
-         {name: "With the Internet spreading like wildfire and reaching every part.", isActive: false},
-         {name: "With the Internet spreading like wildfire and reaching every part.", isActive: false},
-         {name: "With the Internet spreading like wildfire and reaching every part.", isActive: false},
+         {name: "1- With the Internet spreading like wildfire and reaching every part.", isActive: false},
+         {name: "2- With the Internet spreading like wildfire and reaching every part.", isActive: false},
+         {name: "3- With the Internet spreading like wildfire and reaching every part.", isActive: false},
+         {name: "4- With the Internet spreading like wildfire and reaching every part.", isActive: false},
       ]
     };
   },
@@ -151,8 +162,22 @@ export default {
   },
 
   methods: {
+   handleSubmit(){
+      //e.preventDefault;
+      const reducer = (acc, val) => {
+         if(val.isActive)
+            acc.push(val.name);
+         return acc;
+      }
+      let stateData = {};
+      stateData.dataProductName = this.dataProductName;
+      stateData.industryItem = this.industryItem.reduce(reducer, []);
+      stateData.dataCollect = this.dataCollect.reduce(reducer, []);
+      
+      console.log('stateData', stateData);
+      this.statusOk =  true;
+   },
     next() {
-      // isValid ?
       this.activeStep++;
     },
     previous() {
@@ -197,6 +222,13 @@ export default {
   color: #57bf94;
 }
 
+.invisible {
+   display: none !important;
+}
+.visible{
+   display: show;
+}
+
 .multi-step-form {
   &__heading {
     text-align: left;
@@ -233,6 +265,9 @@ export default {
   }
   .next-btn {
     float: right;
+  }
+  .submit-btn {
+     float: right;
   }
   .industry-body {
       border-top: 1px solid #ccc;
